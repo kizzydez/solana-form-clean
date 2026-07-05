@@ -1,131 +1,128 @@
-'use client';
 
-import { useState } from 'react';
-import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+C:\Users\USER\OneDrive\Desktop\solana-form-clean>npm run build
 
-export default function Home() {
-  const { publicKey, sendTransaction, connected } = useWallet();
-  const [status, setStatus] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
+> solana-form-clean@1.0.0 build
+> next build
 
-  const handleVerifyWallet = async () => {
-    if (!publicKey) return alert("Please connect your wallet first");
+  ▲ Next.js 14.2.5
 
-    setIsProcessing(true);
-    setStatus("Verifying wallet...");
+   Linting and checking validity of types  ...
+   We detected TypeScript in your project and created a tsconfig.json file for you.
+ ✓ Linting and checking validity of types
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+ ✓ Collecting page data
+   Generating static pages (2/3)  [   =]Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:52:19)
+    at Object.get (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:47:9)
+    at c (C:\Users\USER\OneDrive\Desktop\solana-form-clean\.next\server\pages\index.js:1:2097)
+    at Wc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:68:44)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:253)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at Xc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:68:409)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:210)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:481)
+Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:52:19)
+    at Object.get (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:47:9)
+    at useWalletMultiButton (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-base-ui/lib/esm/useWalletMultiButton.js:4:72)
+    at BaseWalletMultiButton (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react-ui/lib/esm/BaseWalletMultiButton.js:7:89)
+    at Wc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:68:44)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:253)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:481)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at $c (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:78:98)
+Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:52:19)
+    at Object.get (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:41:9)
+    at useWalletMultiButton (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-base-ui/lib/esm/useWalletMultiButton.js:4:91)
+    at BaseWalletMultiButton (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react-ui/lib/esm/BaseWalletMultiButton.js:7:89)
+    at Wc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:68:44)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:253)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:481)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at $c (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:78:98)
+Error: You have tried to read "wallets" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:52:19)
+    at Object.get (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js:35:9)
+    at useWalletMultiButton (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-base-ui/lib/esm/useWalletMultiButton.js:4:99)
+    at BaseWalletMultiButton (file:///C:/Users/USER/OneDrive/Desktop/solana-form-clean/node_modules/@solana/wallet-adapter-react-ui/lib/esm/BaseWalletMultiButton.js:7:89)
+    at Wc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:68:44)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:253)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at Zc (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:70:481)
+    at Z (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:76:89)
+    at $c (C:\Users\USER\OneDrive\Desktop\solana-form-clean\node_modules\react-dom\cjs\react-dom-server.browser.production.min.js:78:98)
+ ✓ Generating static pages (3/3)
+ ✓ Collecting build traces
+ ✓ Finalizing page optimization
 
-    try {
-      const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+Route (pages)                             Size     First Load JS
+┌ ○ / (2281 ms)                           83.2 kB         161 kB
+├ ○ /404                                  180 B          78.4 kB
+└ ƒ /api/submit                           0 B            78.2 kB
++ First Load JS shared by all             78.2 kB
+  ├ chunks/framework-ecc4130bc7a58a64.js  45.2 kB
+  ├ chunks/main-cb4281779d2d79ab.js       32 kB
+  └ other shared chunks (total)           995 B
 
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: publicKey,
-          lamports: 1000,
-        })
-      );
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
 
-      const latestBlockhash = await connection.getLatestBlockhash();
-      transaction.recentBlockhash = latestBlockhash.blockhash;
-      transaction.feePayer = publicKey;
 
-      const signature = await sendTransaction(transaction, connection);
-      await connection.confirmTransaction(signature, "confirmed");
+C:\Users\USER\OneDrive\Desktop\solana-form-clean>
+C:\Users\USER\OneDrive\Desktop\solana-form-clean>
+C:\Users\USER\OneDrive\Desktop\solana-form-clean>
 
-      setStatus("✓ Wallet verified successfully");
-    } catch (error) {
-      console.error(error);
-      setStatus("Verification completed");
-    } finally {
-      setIsProcessing(false);
-    }
-  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!publicKey) return alert("Please connect your wallet first");
-    showSuccessPage();
-  };
 
-  const showSuccessPage = () => {
-    document.body.innerHTML = `
-      <div style="max-width:680px; margin:60px auto; text-align:center; font-family:'Roboto',Arial,sans-serif; background:white; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1); padding:40px 20px;">
-        <div style="height:8px; background:#8e24aa; border-radius:8px 8px 0 0; margin:-40px -20px 30px -20px;"></div>
-        <h1 style="font-size:28px; color:#202124; margin-bottom:16px;">Your response has been recorded</h1>
-        <p style="font-size:18px; color:#5f6368; margin-bottom:40px;">Thank you for submitting the form.</p>
-        <a href="#" onclick="location.reload()" style="color:#8e24aa; font-size:16px; text-decoration:underline;">Edit your response</a>
-      </div>
-    `;
-  };
 
-  return (
-    <div className="min-h-screen bg-[#f8f9fa] flex justify-center p-6">
-      <div className="w-full max-w-[720px]">
-        <div className="bg-white rounded-lg shadow mb-6 overflow-hidden">
-          <div className="h-2 bg-[#8e24aa]"></div>
-          <div className="p-8">
-            <h1 className="text-3xl font-normal text-[#202124] mb-2">Community Airdrop Report Form</h1>
-            <p className="text-[#5f6368]">Form is exclusive to inner community members only. Do not share link to anyone.</p>
-          </div>
-        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="bg-white rounded-lg shadow p-8">
-            <label className="block text-lg font-medium mb-2">Connect Wallet <span className="text-red-500">*</span></label>
-            <p className="text-sm text-[#5f6368] mb-4">Please connect your wallet to verify your participation.</p>
 
-            <div className="flex gap-4 items-center">
-              <WalletMultiButton className="!bg-white !text-black !border !border-gray-300 hover:!bg-gray-50 !rounded-md" />
-              {connected && publicKey && (
-                <button
-                  type="button"
-                  onClick={handleVerifyWallet}
-                  disabled={isProcessing}
-                  className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-6 py-3 rounded-md font-medium disabled:opacity-50"
-                >
-                  {isProcessing ? "Verifying..." : "Verify Wallet"}
-                </button>
-              )}
-            </div>
 
-            {publicKey && <div className="mt-4 p-3 bg-gray-100 rounded text-sm break-all">Connected: {publicKey.toBase58()}</div>}
-            {status && <div className="mt-2 text-sm text-green-600">{status}</div>}
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-8 space-y-6">
-            <div>
-              <label className="block text-lg font-medium mb-1">Email Address <span className="text-red-500">*</span></label>
-              <input type="email" id="email" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
-            </div>
 
-            <div>
-              <label className="block text-lg font-medium mb-1">Discord Username <span className="text-red-500">*</span></label>
-              <input type="text" id="discord" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
-            </div>
 
-            <div>
-              <label className="block text-lg font-medium mb-1">X (Twitter) Handle <span className="text-red-500">*</span></label>
-              <input type="text" id="twitter" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
-            </div>
 
-            <div>
-              <label className="block text-lg font-medium mb-1">Any Complaint or Additional Information <span className="text-red-500">*</span></label>
-              <textarea id="complaint" rows={5} required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none resize-y" />
-            </div>
-          </div>
 
-          <div className="flex justify-between items-center bg-white rounded-lg shadow p-6">
-            <button type="submit" className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-8 py-3 rounded-md font-medium">
-              Submit
-            </button>
-            <button type="button" onClick={() => window.location.reload()} className="text-[#8e24aa] hover:underline">
-              Clear form
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

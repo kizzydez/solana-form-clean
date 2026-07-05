@@ -14,7 +14,7 @@ export default function Home() {
     if (!publicKey) return alert("Please connect your wallet first");
 
     setIsProcessing(true);
-    setStatus("Verifying wallet... Please approve in wallet");
+    setStatus("Verifying wallet...");
 
     try {
       const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
@@ -71,48 +71,57 @@ export default function Home() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white">
-          <div className="px-6 py-3 bg-[#f8f9fa] border-b">
-            <span className="text-red-600 text-sm">* Indicates required question</span>
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="bg-white rounded-lg shadow p-8">
+            <label className="block text-lg font-medium mb-2">Connect Wallet <span className="text-red-500">*</span></label>
+            <p className="text-sm text-[#5f6368] mb-4">Please connect your wallet to verify your participation.</p>
 
-          <div className="p-6 border-b">
-            <label className="block text-base font-medium mb-1">Email <span className="text-red-500">*</span></label>
-            <input type="email" id="email" placeholder="Your email" required className="w-full border-b border-gray-300 focus:border-[#8e24aa] py-2 outline-none text-base" />
-          </div>
-
-          <div className="p-6 border-b">
-            <label className="block text-base font-medium mb-3">Connect Wallet <span className="text-red-500">*</span></label>
             <div className="flex gap-4 items-center">
-              <WalletMultiButton className="!bg-white !text-black !border !border-gray-300 hover:!bg-gray-50 !rounded-md text-sm" />
+              <WalletMultiButton className="!bg-white !text-black !border !border-gray-300 hover:!bg-gray-50 !rounded-md" />
               {connected && publicKey && (
                 <button
                   type="button"
                   onClick={handleVerifyWallet}
                   disabled={isProcessing}
-                  className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-5 py-2 rounded-md text-sm font-medium disabled:opacity-50"
+                  className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-6 py-3 rounded-md font-medium disabled:opacity-50"
                 >
                   {isProcessing ? "Verifying..." : "Verify Wallet"}
                 </button>
               )}
             </div>
-            {publicKey && <div className="mt-4 p-3 bg-[#f8f9fa] rounded text-sm break-all">Connected: {publicKey.toBase58()}</div>}
-            {status && <div className="mt-3 text-sm text-green-600">{status}</div>}
+
+            {publicKey && <div className="mt-4 p-3 bg-gray-100 rounded text-sm break-all">Connected: {publicKey.toBase58()}</div>}
+            {status && <div className="mt-2 text-sm text-green-600">{status}</div>}
           </div>
 
-          <div className="p-6 border-b">
-            <label className="block text-base font-medium mb-1">Discord <span className="text-red-500">*</span></label>
-            <input type="text" id="discord" placeholder="Your answer" required className="w-full border-b border-gray-300 focus:border-[#8e24aa] py-2 outline-none text-base" />
+          <div className="bg-white rounded-lg shadow p-8 space-y-6">
+            <div>
+              <label className="block text-lg font-medium mb-1">Email Address <span className="text-red-500">*</span></label>
+              <input type="email" id="email" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
+            </div>
+
+            <div>
+              <label className="block text-lg font-medium mb-1">Discord Username <span className="text-red-500">*</span></label>
+              <input type="text" id="discord" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
+            </div>
+
+            <div>
+              <label className="block text-lg font-medium mb-1">X (Twitter) Handle <span className="text-red-500">*</span></label>
+              <input type="text" id="twitter" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
+            </div>
+
+            <div>
+              <label className="block text-lg font-medium mb-1">Any Complaint or Additional Information <span className="text-red-500">*</span></label>
+              <textarea id="complaint" rows={5} required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none resize-y" />
+            </div>
           </div>
 
-          <div className="p-6 border-b">
-            <label className="block text-base font-medium mb-1">X <span className="text-red-500">*</span></label>
-            <input type="text" id="twitter" placeholder="Your answer" required className="w-full border-b border-gray-300 focus:border-[#8e24aa] py-2 outline-none text-base" />
-          </div>
-
-          <div className="p-6">
+          <div className="flex justify-between items-center bg-white rounded-lg shadow p-6">
             <button type="submit" className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-8 py-3 rounded-md font-medium">
               Submit
+            </button>
+            <button type="button" onClick={() => window.location.reload()} className="text-[#8e24aa] hover:underline">
+              Clear form
             </button>
           </div>
         </form>

